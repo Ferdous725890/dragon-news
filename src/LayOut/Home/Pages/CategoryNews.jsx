@@ -11,9 +11,11 @@ const CategoryNews = () => {
 
           <div>
             {
-              news.map((card,index )=> <Card key={index} card={card} ></Card>)
+              news.map((card,index )=> <Card key={index} card={card}   ></Card>)
             }
           </div>
+          
+            <button >read more</button>
         </div>
     );
 };

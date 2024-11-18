@@ -1,6 +1,32 @@
-import React from 'react';
+import React, { useContext } from 'react';
+import { Link } from 'react-router-dom';
+import { AuthContext } from './src/AuthProvider/AuthProvider';
 
-const Register = () => {
+const Registers = () => {
+    const {createNewUser,  setuser} = useContext(AuthContext)
+    const handelSubmite = (e) =>{
+        e.preventDefault()
+        const form = new FormData(e.target)
+        const name = form.get("name")
+        const photourl = form.get("photourl")
+        const email = form.get("email")
+        const password = form.get("password")   
+
+        console.log({name, photourl, email, password});
+       
+        createNewUser(email,password)
+        .then((result)=>{
+            const user = result.user
+            console.log(user);
+            setuser(user)
+        })
+        .catch((error)=>{
+            const errorMessage = error.message
+            const errorCode= error.code
+            console.log(errorMessage, errorCode);
+        })
+
+    }
     return (
         <div>
             <div className='container border border-red-500'>
@@ -12,10 +38,31 @@ const Register = () => {
                     <div className="flex items-center justify-center min-h-screen bg-gray-100">
                         <div className="w-full max-w-md p-8 bg-red-500 rounded-lg shadow-lg">
                             <h2 className="text-2xl font-bold text-center text-gray-700 mb-6">Welcome Back</h2>
-                            <form className="space-y-6">
+                            <form onSubmit={handelSubmite} className="space-y-6">
+                                <div className="form-control">
+                                    <label className="block text-sm font-medium text-gray-700 mb-1">Name</label>
+                                    <input
+                                        name='name'
+                                        type="text"
+                                        placeholder="Enter your email"
+                                        className="input input-bordered w-full px-4 py-2 text-sm border-gray-300 rounded-lg focus:ring-primary focus:border-primary"
+                                        required
+                                    />
+                                </div>
+                                <div className="form-control">
+                                    <label className="block text-sm font-medium text-gray-700 mb-1">Photo Url</label>
+                                    <input
+                                        name='photourl'
+                                        type="text"
+                                        placeholder="Enter your email"
+                                        className="input input-bordered w-full px-4 py-2 text-sm border-gray-300 rounded-lg focus:ring-primary focus:border-primary"
+                                        required
+                                    />
+                                </div>
                                 <div className="form-control">
                                     <label className="block text-sm font-medium text-gray-700 mb-1">Email</label>
                                     <input
+                                        name='email'
                                         type="email"
                                         placeholder="Enter your email"
                                         className="input input-bordered w-full px-4 py-2 text-sm border-gray-300 rounded-lg focus:ring-primary focus:border-primary"
@@ -25,6 +72,7 @@ const Register = () => {
                                 <div className="form-control">
                                     <label className="block text-sm font-medium text-gray-700 mb-1">Password</label>
                                     <input
+                                        name='password'
                                         type="password"
                                         placeholder="Enter your password"
                                         className="input input-bordered w-full px-4 py-2 text-sm border-gray-300 rounded-lg focus:ring-primary focus:border-primary"
@@ -59,4 +107,4 @@ const Register = () => {
     );
 };
 
-export default Register;
+export default Registers;
